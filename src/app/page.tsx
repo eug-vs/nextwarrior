@@ -18,7 +18,6 @@ async function CmdOutput({ cmd }: { cmd: string }) {
     try {
       const json = JSON.parse(stdout);
       const parsed = taskSchema.array().parse(json);
-      console.log(parsed);
       return (
         <section className="grid gap-4">
           {_.orderBy(parsed, ["status", "urgency"], ["desc", "desc"]).map(

@@ -4,9 +4,9 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
 import CommandForm from "./commandForm";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import SubmitButton from "@/components/submit-button";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -42,7 +42,7 @@ export default function RootLayout({
                   name="filter"
                 />
               </fieldset>
-              <Button type="submit">Show</Button>
+              <SubmitButton>Show</SubmitButton>
             </form>
             <CommandForm />
           </div>

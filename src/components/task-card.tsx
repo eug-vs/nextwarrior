@@ -41,7 +41,7 @@ export default function TaskCard({ task }: { task: Task }) {
     <Card>
       <CardHeader>
         <CardTitle className="flex justify-between gap-2">
-          <span className="flex gap-5 items-start flex-col">
+          <span className="flex gap-5 items-start flex-col md:flex-row">
             <Tooltip>
               <TooltipTrigger className="text-left">
                 <Link href={`/${task.uuid}`}>{task.description}</Link>

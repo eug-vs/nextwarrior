@@ -12,13 +12,9 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { runTaskSubcommand } from "./actions";
-import { useFormState, useFormStatus } from "react-dom";
+import { useFormState } from "react-dom";
 import CodeBlock from "@/lib/codeblock";
-
-function SubmitButton() {
-  const formStatus = useFormStatus();
-  return <Button disabled={formStatus.pending}>Execute</Button>;
-}
+import SubmitButton from "@/components/submit-button";
 
 export default function CommandForm() {
   const [formState, action] = useFormState(runTaskSubcommand, {
@@ -56,7 +52,7 @@ export default function CommandForm() {
             )}
           </div>
           <DialogFooter>
-            <SubmitButton />
+            <SubmitButton>Execute</SubmitButton>
           </DialogFooter>
         </form>
       </DialogContent>
