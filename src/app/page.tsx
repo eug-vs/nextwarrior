@@ -4,6 +4,7 @@ import { exec } from "@/lib/exec";
 import { taskSchema } from "@/lib/schema";
 import CodeBlock from "@/lib/codeblock";
 import TaskCard from "@/components/task-card";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface Props {
   searchParams: {
@@ -51,7 +52,16 @@ export default async function Home({ searchParams }: Props) {
   return (
     <main className="grid gap-4">
       <h1 className="font-mono text-center">{cmd}</h1>
-      <Suspense key={searchParams.filter} fallback="Loading...">
+      <Suspense
+        key={searchParams.filter}
+        fallback={
+          <section className="grid gap-4">
+            {_.times(5).map((i) => (
+              <Skeleton key={i} className="h-48" />
+            ))}
+          </section>
+        }
+      >
         <CmdOutput cmd={cmd} />
       </Suspense>
     </main>
