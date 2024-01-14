@@ -37,6 +37,7 @@ export default function RootLayout({
                 <Label htmlFor="filter">Filter</Label>
                 <Input
                   id="filter"
+                  className="min-w-80"
                   placeholder="task <FILTER> export"
                   type="text"
                   name="filter"

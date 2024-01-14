@@ -45,7 +45,9 @@ async function CmdOutput({ cmd }: { cmd: string }) {
 }
 
 export default async function Home({ searchParams }: Props) {
-  const cmd = `task pro:barter ${searchParams.filter || ""} export`;
+  const cmd = `task ${process.env.FILTER_SCOPE || ""} ${
+    searchParams.filter || ""
+  } export`;
   return (
     <main className="grid gap-4">
       <h1 className="font-mono text-center">{cmd}</h1>
