@@ -38,7 +38,13 @@ function Annotation({ annotation }: { annotation: Annotation }) {
 
 export default function TaskCard({ task }: { task: Task }) {
   return (
-    <Card>
+    <Card
+      className={
+        ["deleted", "completed"].includes(task.status)
+          ? "text-muted-foreground"
+          : ""
+      }
+    >
       <CardHeader>
         <CardTitle className="flex justify-between gap-2">
           <span className="flex gap-5 items-start flex-col md:flex-row">
@@ -49,7 +55,16 @@ export default function TaskCard({ task }: { task: Task }) {
               <TooltipContent>ID: {task.id}</TooltipContent>
             </Tooltip>
             <span className="flex gap-2 flex-wrap items-start">
-              {task.tags?.map((tag) => <Badge key={tag}>{tag}</Badge>)}
+              {task.tags?.map((tag) => (
+                <Link
+                  key={tag}
+                  href={`/?${new URLSearchParams({
+                    filter: `+${tag}`,
+                  }).toString()}`}
+                >
+                  <Badge key={tag}>{tag}</Badge>
+                </Link>
+              ))}
             </span>
           </span>
           <span>
@@ -61,7 +76,13 @@ export default function TaskCard({ task }: { task: Task }) {
           <p>
             Created {task.entry.toLocaleString()}
             <br />
-            {task.due && <span>Due {task.due?.toLocaleString()}</span>}
+            {task.due && (
+              <span>
+                Due {task.due?.toLocaleString()}
+                <br />
+              </span>
+            )}
+            {task.end && <span>Completed {task.end.toLocaleString()}</span>}
           </p>
         </CardDescription>
       </CardHeader>
