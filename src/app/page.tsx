@@ -10,6 +10,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Suspense } from "react";
 const exec = util.promisify(execRaw);
 
 interface Props {
@@ -77,47 +79,37 @@ function Annotation({ annotation }: { annotation: Annotation }) {
   );
 }
 
-function TaskRow({ task }: { task: Task }) {
+function TaskCard({ task }: { task: Task }) {
   return (
     <Card>
       <CardHeader>
         <CardTitle className="flex justify-between">
-          <span>
-            {task.id} {task.description}
+          <span className="flex gap-5">
+            {task.description}
+            <span className="flex gap-2 flex-wrap">
+              {task.tags?.map((tag) => <Badge key={tag}>{tag}</Badge>)}
+            </span>
           </span>
           <span>
-            {task.status === "completed"
-              ? "Completed"
-              : task.urgency.toFixed(2)}
+            {task.status === "pending" ? task.urgency.toFixed(2) : task.status}
           </span>
         </CardTitle>
-        <CardDescription className="flex gap-2 flex-wrap">
+        <CardDescription>
           {task.project}
-
-          {task.tags?.map((tag) => (
-            <span
-              key={tag}
-              className="bg-blue-300 text-background rounded-md px-1 text-sm"
-            >
-              {tag}
-            </span>
-          ))}
+          <p>
+            Created {task.entry.toLocaleString()}
+            <br />
+            {task.due && <span>Due {task.due?.toLocaleString()}</span>}
+          </p>
         </CardDescription>
       </CardHeader>
-      <CardContent>
-        {task.due && (
-          <span className="bg-red-300 text-background rounded-md py-0.5 px-1 text-sm">
-            {task.due?.toLocaleString()}
-          </span>
-        )}
-        {task.annotations && (
-          <ul className="text-">
-            {task.annotations.map((anno) => (
-              <Annotation key={anno.description} annotation={anno} />
-            ))}
-          </ul>
-        )}
-      </CardContent>
+      {task.annotations && (
+        <CardContent className="text-">
+          {task.annotations.map((anno) => (
+            <Annotation key={anno.description} annotation={anno} />
+          ))}
+        </CardContent>
+      )}
     </Card>
   );
 }
@@ -127,15 +119,15 @@ async function CmdOutput({ cmd }: { cmd: string }) {
 
   try {
     const json = JSON.parse(stdout);
-    console.log({ json });
     const parsed = taskSchema.array().parse(json);
-    console.log(_.uniqBy(parsed, "status"));
     return (
-      <ul className="flex gap-4 flex-col">
-        {_.orderBy(parsed, "urgency", "desc").map((task) => (
-          <TaskRow key={task.uuid} task={task} />
-        ))}
-      </ul>
+      <section className="flex gap-4 flex-col">
+        {_.orderBy(parsed, ["status", "urgency"], ["desc", "desc"]).map(
+          (task) => (
+            <TaskCard key={task.uuid} task={task} />
+          ),
+        )}
+      </section>
     );
   } catch (e) {
     return (
@@ -151,7 +143,9 @@ export default async function Home({ searchParams }: Props) {
   return (
     <main className="flex flex-col items-center justify-between p-24">
       <h1 className="font-mono">{searchParams.cmd}</h1>
-      {searchParams.cmd && <CmdOutput cmd={searchParams.cmd} />}
+      <Suspense key={searchParams.cmd} fallback="Loading...">
+        {searchParams.cmd && <CmdOutput cmd={searchParams.cmd} />}
+      </Suspense>
     </main>
   );
 }

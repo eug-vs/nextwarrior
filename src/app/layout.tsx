@@ -31,7 +31,12 @@ export default function RootLayout({
           >
             <fieldset className="flex flex-col gap-1.5">
               <Label htmlFor="cmd">Command</Label>
-              <Input id="cmd" type="text" name="cmd" />
+              <Input
+                id="cmd"
+                placeholder="task <FILTER> export"
+                type="text"
+                name="cmd"
+              />
             </fieldset>
           </form>
         </header>
