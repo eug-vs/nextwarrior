@@ -102,31 +102,29 @@ export default function TaskCard({ task }: { task: Task }) {
           </span>
         </CardTitle>
         <CardDescription>
-          <p>
-            Created {task.entry.toLocaleString()}
-            <br />
-            {task.due && (
-              <span>
-                Due {task.due?.toLocaleString()}
-                <br />
-              </span>
-            )}
-            {task.start && (
-              <span className="text-yellow-500">
-                Started {task.start.toLocaleString()} <br />
-              </span>
-            )}
-            {task.wait && (
-              <span>
-                Waiting {task.wait.toLocaleString()} <br />
-              </span>
-            )}
-            {task.end && (
-              <span>
-                Completed {task.end.toLocaleString()} <br />
-              </span>
-            )}
-          </p>
+          Created {task.entry.toLocaleString()}
+          <br />
+          {task.due && (
+            <span>
+              Due {task.due?.toLocaleString()}
+              <br />
+            </span>
+          )}
+          {task.start && (
+            <span className="text-yellow-500">
+              Started {task.start.toLocaleString()} <br />
+            </span>
+          )}
+          {task.wait && (
+            <span>
+              Waiting {task.wait.toLocaleString()} <br />
+            </span>
+          )}
+          {task.end && (
+            <span>
+              Completed {task.end.toLocaleString()} <br />
+            </span>
+          )}
         </CardDescription>
       </CardHeader>
       {task.annotations && (

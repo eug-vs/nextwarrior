@@ -25,7 +25,7 @@ export default function CommandForm() {
 
   return (
     <Dialog>
-      <DialogTrigger>
+      <DialogTrigger asChild>
         <Button>Execute command</Button>
       </DialogTrigger>
       <DialogContent className="flex flex-col max-w-2xl">
