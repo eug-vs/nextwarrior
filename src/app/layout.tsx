@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import CommandForm from "./commandForm";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -41,12 +42,14 @@ export default function RootLayout({
                   name="filter"
                 />
               </fieldset>
-              <Button type="submit">Apply</Button>
+              <Button type="submit">Show</Button>
             </form>
             <CommandForm />
           </div>
         </header>
-        <div className="container py-16">{children}</div>
+        <div className="container py-16">
+          <TooltipProvider>{children}</TooltipProvider>
+        </div>
       </body>
     </html>
   );

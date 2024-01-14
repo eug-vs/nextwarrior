@@ -18,8 +18,9 @@ async function CmdOutput({ cmd }: { cmd: string }) {
     try {
       const json = JSON.parse(stdout);
       const parsed = taskSchema.array().parse(json);
+      console.log(parsed);
       return (
-        <section className="flex gap-4 flex-col">
+        <section className="grid gap-4">
           {_.orderBy(parsed, ["status", "urgency"], ["desc", "desc"]).map(
             (task) => (
               <TaskCard key={task.uuid} task={task} />
@@ -29,7 +30,7 @@ async function CmdOutput({ cmd }: { cmd: string }) {
       );
     } catch (e) {
       return (
-        <section className="max-w-[70vw] mx-auto">
+        <section>
           <CodeBlock>{stdout}</CodeBlock>
           <CodeBlock variant="destructive">{stderr}</CodeBlock>
         </section>
@@ -47,8 +48,8 @@ async function CmdOutput({ cmd }: { cmd: string }) {
 export default async function Home({ searchParams }: Props) {
   const cmd = `task ${searchParams.filter || ""} export`;
   return (
-    <main className="flex flex-col gap-4 items-center justify-between">
-      <h1 className="font-mono">{cmd}</h1>
+    <main className="grid gap-4">
+      <h1 className="font-mono text-center">{cmd}</h1>
       <Suspense key={searchParams.filter} fallback="Loading...">
         <CmdOutput cmd={cmd} />
       </Suspense>
