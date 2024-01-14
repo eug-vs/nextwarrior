@@ -2,6 +2,7 @@
 import { exec } from "@/lib/exec";
 import _ from "lodash";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 export async function runTaskSubcommand(
   _previousState: any,
@@ -20,4 +21,11 @@ export async function runTaskSubcommand(
   } catch (e: any) {
     return { cmd, error: e.message };
   }
+}
+
+export async function applyFilter(formData: FormData) {
+  "use server";
+  const filter = formData.get("filter")?.toString();
+  if (!filter) return redirect("/");
+  return redirect(`/?${new URLSearchParams({ filter }).toString()}`);
 }
