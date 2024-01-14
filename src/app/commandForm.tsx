@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import { runTaskSubcommand } from "./actions";
 import { useFormState, useFormStatus } from "react-dom";
+import CodeBlock from "@/lib/codeblock";
 
 function SubmitButton() {
   const formStatus = useFormStatus();
@@ -49,15 +50,9 @@ export default function CommandForm() {
                 name="cmd"
               />
             </fieldset>
-            {formState.stdout && (
-              <pre className="font-mono rounded-md p-2 max-w-min overflow-x-scroll border">
-                {formState.stdout}
-              </pre>
-            )}
+            {formState.stdout && <CodeBlock>{formState.stdout}</CodeBlock>}
             {formState.error && (
-              <pre className="font-mono bg-destructive text-destructive-foreground rounded-md p-2 border overflow-x-scroll">
-                {formState.error}
-              </pre>
+              <CodeBlock variant="destructive">{formState.error}</CodeBlock>
             )}
           </div>
           <DialogFooter>

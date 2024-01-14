@@ -29,22 +29,24 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} min-h-screen`}>
-        <header className="p-8 border-b flex justify-between">
-          <form className="flex gap-4 items-end" action={handleApplyFilter}>
-            <fieldset className="flex flex-col gap-1.5">
-              <Label htmlFor="filter">Filter</Label>
-              <Input
-                id="filter"
-                placeholder="task <FILTER> export"
-                type="text"
-                name="filter"
-              />
-            </fieldset>
-            <Button type="submit">Apply</Button>
-          </form>
-          <CommandForm />
+        <header className="border-b">
+          <div className="container p-8 flex justify-between">
+            <form className="flex gap-4 items-end" action={handleApplyFilter}>
+              <fieldset className="flex flex-col gap-1.5">
+                <Label htmlFor="filter">Filter</Label>
+                <Input
+                  id="filter"
+                  placeholder="task <FILTER> export"
+                  type="text"
+                  name="filter"
+                />
+              </fieldset>
+              <Button type="submit">Apply</Button>
+            </form>
+            <CommandForm />
+          </div>
         </header>
-        {children}
+        <div className="container py-16">{children}</div>
       </body>
     </html>
   );

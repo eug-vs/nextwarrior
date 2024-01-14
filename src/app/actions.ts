@@ -1,9 +1,7 @@
 "use server";
-import { exec as execRaw } from "child_process";
+import { exec } from "@/lib/exec";
 import _ from "lodash";
 import { revalidatePath } from "next/cache";
-import util from "util";
-const exec = util.promisify(execRaw);
 
 export async function runTaskSubcommand(
   _previousState: any,
