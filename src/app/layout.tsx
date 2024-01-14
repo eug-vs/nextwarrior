@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,9 +29,9 @@ export default function RootLayout({
               return redirect(`?${new URLSearchParams({ cmd }).toString()}`);
             }}
           >
-            <fieldset className="flex flex-col">
-              <label htmlFor="cmd">Command</label>
-              <input id="cmd" className="ring-2 p-2" type="text" name="cmd" />
+            <fieldset className="flex flex-col gap-1.5">
+              <Label htmlFor="cmd">Command</Label>
+              <Input id="cmd" type="text" name="cmd" />
             </fieldset>
           </form>
         </header>

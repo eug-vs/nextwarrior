@@ -3,6 +3,13 @@ import { exec as execRaw } from "child_process";
 import { z } from "zod";
 import Link from "next/link";
 import _ from "lodash";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 const exec = util.promisify(execRaw);
 
 interface Props {
@@ -34,10 +41,13 @@ const taskSchema = z.object({
   due: timestampSchema.optional(),
   end: timestampSchema.optional(),
   description: z.string(),
-  status: z.string(),
+  status: z.enum(["pending", "completed", "deleted", "recurring"]),
   project: z.string().optional(),
   tags: z.string().array().optional(),
-  annotations: annotationSchema.array().optional(),
+  annotations: annotationSchema
+    .array()
+    .transform((t) => _.orderBy(t, "entry", "asc"))
+    .optional(),
   urgency: z.number(),
 });
 
@@ -58,49 +68,57 @@ function MaybeLink({ text: textOrUrl }: { text: string }) {
 
 function Annotation({ annotation }: { annotation: Annotation }) {
   return (
-    <li>
-      {annotation.entry.toLocaleString()}{" "}
+    <li className="flex justify-between gap-4">
       <MaybeLink text={annotation.description} />
+      <span className="text-muted-foreground">
+        {annotation.entry.toLocaleString()}
+      </span>
     </li>
   );
 }
 
 function TaskRow({ task }: { task: Task }) {
   return (
-    <li className="p-2 shadow-sm border">
-      <span className="font-bold">{task.urgency.toFixed(2)}</span>{" "}
-      {task.description}{" "}
-      {task.project && (
-        <span className="bg-green-300 rounded-md py-0.5 px-1 text-sm">
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex justify-between">
+          <span>
+            {task.id} {task.description}
+          </span>
+          <span>
+            {task.status === "completed"
+              ? "Completed"
+              : task.urgency.toFixed(2)}
+          </span>
+        </CardTitle>
+        <CardDescription className="flex gap-2 flex-wrap">
           {task.project}
-        </span>
-      )}
-      {task.tags && (
-        <>
-          {task.tags.map((tag) => (
+
+          {task.tags?.map((tag) => (
             <span
               key={tag}
-              className="bg-blue-300 rounded-md py-0.5 px-1 text-sm"
+              className="bg-blue-300 text-background rounded-md px-1 text-sm"
             >
               {tag}
             </span>
           ))}
-        </>
-      )}
-      {task.status}
-      {task.due && (
-        <span className="bg-red-300 rounded-md py-0.5 px-1 text-sm">
-          {task.due?.toLocaleString()}
-        </span>
-      )}
-      {task.annotations && (
-        <ul className="text-gray-500">
-          {task.annotations.map((anno) => (
-            <Annotation key={anno.description} annotation={anno} />
-          ))}
-        </ul>
-      )}
-    </li>
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        {task.due && (
+          <span className="bg-red-300 text-background rounded-md py-0.5 px-1 text-sm">
+            {task.due?.toLocaleString()}
+          </span>
+        )}
+        {task.annotations && (
+          <ul className="text-">
+            {task.annotations.map((anno) => (
+              <Annotation key={anno.description} annotation={anno} />
+            ))}
+          </ul>
+        )}
+      </CardContent>
+    </Card>
   );
 }
 
@@ -111,6 +129,7 @@ async function CmdOutput({ cmd }: { cmd: string }) {
     const json = JSON.parse(stdout);
     console.log({ json });
     const parsed = taskSchema.array().parse(json);
+    console.log(_.uniqBy(parsed, "status"));
     return (
       <ul className="flex gap-4 flex-col">
         {_.orderBy(parsed, "urgency", "desc").map((task) => (
