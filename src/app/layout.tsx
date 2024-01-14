@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,24 +21,28 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} min-h-screen`}>
-        <header className="p-8 border-b">
+        <header className="p-8 border-b flex justify-center">
           <form
+            className="flex gap-4 items-end"
             action={async (formData) => {
               "use server";
-              const cmd = formData.get("cmd")?.toString();
-              if (!cmd) throw new Error("Wtf");
-              return redirect(`?${new URLSearchParams({ cmd }).toString()}`);
+              const filter = formData.get("filter")?.toString();
+              if (!filter) return redirect("/");
+              return redirect(
+                `/?${new URLSearchParams({ filter }).toString()}`,
+              );
             }}
           >
             <fieldset className="flex flex-col gap-1.5">
-              <Label htmlFor="cmd">Command</Label>
+              <Label htmlFor="filter">Filter</Label>
               <Input
-                id="cmd"
+                id="filter"
                 placeholder="task <FILTER> export"
                 type="text"
-                name="cmd"
+                name="filter"
               />
             </fieldset>
+            <Button type="submit">Apply</Button>
           </form>
         </header>
         {children}

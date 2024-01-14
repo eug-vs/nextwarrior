@@ -16,7 +16,7 @@ const exec = util.promisify(execRaw);
 
 interface Props {
   searchParams: {
-    cmd?: string;
+    filter?: string;
   };
 }
 
@@ -115,36 +115,45 @@ function TaskCard({ task }: { task: Task }) {
 }
 
 async function CmdOutput({ cmd }: { cmd: string }) {
-  const { stdout, stderr } = await exec(cmd);
-
   try {
-    const json = JSON.parse(stdout);
-    const parsed = taskSchema.array().parse(json);
+    const { stdout, stderr } = await exec(cmd);
+
+    try {
+      const json = JSON.parse(stdout);
+      const parsed = taskSchema.array().parse(json);
+      return (
+        <section className="flex gap-4 flex-col">
+          {_.orderBy(parsed, ["status", "urgency"], ["desc", "desc"]).map(
+            (task) => (
+              <TaskCard key={task.uuid} task={task} />
+            ),
+          )}
+        </section>
+      );
+    } catch (e) {
+      return (
+        <section className="border max-w-[70vw] mx-auto overflow-x-scroll">
+          <pre>{stdout}</pre>
+          <pre className="bg-red-500 text-white">{stderr}</pre>
+        </section>
+      );
+    }
+  } catch (e: any) {
     return (
-      <section className="flex gap-4 flex-col">
-        {_.orderBy(parsed, ["status", "urgency"], ["desc", "desc"]).map(
-          (task) => (
-            <TaskCard key={task.uuid} task={task} />
-          ),
-        )}
-      </section>
-    );
-  } catch (e) {
-    return (
-      <section className="border max-w-[70vw] mx-auto overflow-x-scroll">
-        <pre>{stdout}</pre>
-        <pre className="bg-red-500 text-white">{stderr}</pre>
+      <section className="bg-red-500 text-white p-4 rounded-md">
+        <pre>{e.message}</pre>
       </section>
     );
   }
 }
 
 export default async function Home({ searchParams }: Props) {
+  const cmd = `task ${searchParams.filter || ""} export`;
   return (
-    <main className="flex flex-col items-center justify-between p-24">
-      <h1 className="font-mono">{searchParams.cmd}</h1>
-      <Suspense key={searchParams.cmd} fallback="Loading...">
-        {searchParams.cmd && <CmdOutput cmd={searchParams.cmd} />}
+    <main className="flex flex-col gap-4 items-center justify-between p-24">
+      <h1 className="font-mono">{cmd}</h1>
+      <Suspense key={searchParams.filter} fallback="Loading...">
+        <CmdOutput cmd={cmd} />
       </Suspense>
     </main>
   );
