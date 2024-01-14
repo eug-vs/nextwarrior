@@ -67,7 +67,11 @@ export default function TaskCard({ task }: { task: Task }) {
             <span className="flex gap-5 items-start flex-col md:flex-row">
               <Tooltip>
                 <TooltipTrigger className="text-left">
-                  <Link href={`/${task.uuid}`}>{task.description}</Link>
+                  <Link
+                    href={`/?${new URLSearchParams({ filter: task.uuid })}`}
+                  >
+                    {task.description}
+                  </Link>
                 </TooltipTrigger>
                 <TooltipContent>ID: {task.id}</TooltipContent>
               </Tooltip>
