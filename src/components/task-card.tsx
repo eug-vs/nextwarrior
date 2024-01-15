@@ -112,7 +112,13 @@ export default function TaskCard({ task }: { task: Task }) {
             {task.entry.toLocaleString()}
           </span>
           {task.due && (
-            <span className="flex gap-1">
+            <span
+              className={`flex gap-1 ${
+                task.due < new Date() &&
+                !["completed", "deleted"].includes(task.status) &&
+                "text-red-500"
+              }`}
+            >
               <CalendarDaysIcon className="w-4" /> Due{" "}
               {task.due?.toLocaleString()}
               <br />
@@ -124,7 +130,7 @@ export default function TaskCard({ task }: { task: Task }) {
               {task.start.toLocaleString()} <br />
             </span>
           )}
-          {task.wait && (
+          {task.status === "waiting" && task.wait && (
             <span className="flex gap-1">
               <ClockIcon className="w-4" /> Waiting {task.wait.toLocaleString()}{" "}
               <br />
