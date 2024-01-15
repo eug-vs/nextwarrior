@@ -42,7 +42,9 @@ export const taskSchema = z
     status:
       !["deleted", "completed"].includes(task.status) && task.start
         ? ("active" as const)
-        : task.status,
+        : task.wait && task.wait > new Date()
+          ? ("waiting" as const)
+          : task.status,
   }));
 
 export type Task = z.infer<typeof taskSchema>;

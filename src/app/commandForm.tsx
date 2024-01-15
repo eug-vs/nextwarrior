@@ -15,6 +15,7 @@ import { runTaskSubcommand } from "./actions";
 import { useFormState } from "react-dom";
 import CodeBlock from "@/lib/codeblock";
 import SubmitButton from "@/components/submit-button";
+import { CommandLineIcon, PlayIcon } from "@heroicons/react/24/outline";
 
 export default function CommandForm() {
   const [formState, action] = useFormState(runTaskSubcommand, {
@@ -26,7 +27,10 @@ export default function CommandForm() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>Execute command</Button>
+        <Button className="gap-1 flex">
+          <CommandLineIcon className="w-5" />
+          Execute command
+        </Button>
       </DialogTrigger>
       <DialogContent className="flex flex-col max-w-2xl">
         <form action={action}>
@@ -52,7 +56,10 @@ export default function CommandForm() {
             )}
           </div>
           <DialogFooter>
-            <SubmitButton>Execute</SubmitButton>
+            <SubmitButton className="flex gap-1">
+              <PlayIcon className="w-5" />
+              Execute
+            </SubmitButton>
           </DialogFooter>
         </form>
       </DialogContent>

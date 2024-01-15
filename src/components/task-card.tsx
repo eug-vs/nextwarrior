@@ -11,6 +11,13 @@ import { Task, Annotation } from "@/lib/schema";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 import { cva } from "class-variance-authority";
 import Markdown from "react-markdown";
+import {
+  ArrowUpIcon,
+  CalendarDaysIcon,
+  CalendarIcon,
+  DocumentDuplicateIcon,
+} from "@heroicons/react/24/outline";
+import { ClockIcon } from "lucide-react";
 
 function MaybeLink({ text: textOrUrl }: { text: string }) {
   try {
@@ -44,6 +51,7 @@ const taskVariants = cva("", {
     status: {
       recurring: "hidden",
       pending: "",
+      waiting: "text-muted-foreground",
       deleted: "text-muted-foreground",
       active: "border-yellow-500",
       completed: "text-muted-foreground border-green-500",
@@ -89,37 +97,43 @@ export default function TaskCard({ task }: { task: Task }) {
               href={`/?${new URLSearchParams({
                 filter: `project:${task.project}`,
               })}`}
-              className="text-base font-semibold"
+              className="text-base font-semibold flex gap-1"
             >
-              {task.project}
+              <DocumentDuplicateIcon className="w-4" /> {task.project}
             </Link>
           </div>
-          <span>
+          <span className="flex gap-1 items-start">
             {task.status === "pending" ? task.urgency.toFixed(2) : task.status}
           </span>
         </CardTitle>
         <CardDescription>
-          Created {task.entry.toLocaleString()}
-          <br />
+          <span className="flex gap-1">
+            <CalendarIcon className="w-4" /> Created{" "}
+            {task.entry.toLocaleString()}
+          </span>
           {task.due && (
-            <span>
-              Due {task.due?.toLocaleString()}
+            <span className="flex gap-1">
+              <CalendarDaysIcon className="w-4" /> Due{" "}
+              {task.due?.toLocaleString()}
               <br />
             </span>
           )}
           {task.start && (
-            <span className="text-yellow-500">
-              Started {task.start.toLocaleString()} <br />
+            <span className="text-yellow-500 flex gap-1">
+              <CalendarIcon className="w-4" /> Started{" "}
+              {task.start.toLocaleString()} <br />
             </span>
           )}
           {task.wait && (
-            <span>
-              Waiting {task.wait.toLocaleString()} <br />
+            <span className="flex gap-1">
+              <ClockIcon className="w-4" /> Waiting {task.wait.toLocaleString()}{" "}
+              <br />
             </span>
           )}
           {task.end && (
-            <span className="text-green-500">
-              Ended {task.end.toLocaleString()} <br />
+            <span className="text-green-500 flex gap-1">
+              <CalendarIcon className="w-4" /> Ended {task.end.toLocaleString()}{" "}
+              <br />
             </span>
           )}
         </CardDescription>

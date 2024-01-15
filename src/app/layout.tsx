@@ -21,7 +21,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.className} min-h-screen`}>
         <header className="border-b">
-          <div className="container p-8 flex justify-between">
+          <div className="container p-8 flex justify-between items-end">
             <Filter />
             <CommandForm />
           </div>
