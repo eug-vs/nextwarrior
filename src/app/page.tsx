@@ -12,6 +12,15 @@ interface Props {
   };
 }
 
+const statusSortorder = [
+  "active",
+  "pending",
+  "waiting",
+  "recurring",
+  "completed",
+  "deleted",
+] as const;
+
 async function CmdOutput({ cmd }: { cmd: string }) {
   try {
     const { stdout, stderr } = await exec(cmd);
@@ -21,11 +30,16 @@ async function CmdOutput({ cmd }: { cmd: string }) {
       const parsed = taskSchema.array().parse(json);
       return (
         <section className="grid gap-4">
-          {_.orderBy(parsed, ["status", "urgency"], ["desc", "desc"]).map(
-            (task) => (
-              <TaskCard key={task.uuid} task={task} />
-            ),
-          )}
+          {_.orderBy(
+            parsed,
+            [
+              (item) => statusSortorder.findIndex((s) => s === item.status),
+              "urgency",
+            ],
+            ["asc", "desc"],
+          ).map((task) => (
+            <TaskCard key={task.uuid} task={task} />
+          ))}
         </section>
       );
     } catch (e) {

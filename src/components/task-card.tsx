@@ -103,7 +103,9 @@ export default function TaskCard({ task }: { task: Task }) {
             </Link>
           </div>
           <span className="flex gap-1 items-start">
-            {task.status === "pending" ? task.urgency.toFixed(2) : task.status}
+            {["pending", "active"].includes(task.status)
+              ? task.urgency.toFixed(2)
+              : task.status}
           </span>
         </CardTitle>
         <CardDescription>
