@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { Task, Annotation } from "@/lib/schema";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 import { cva } from "class-variance-authority";
+import Markdown from "react-markdown";
 
 function MaybeLink({ text: textOrUrl }: { text: string }) {
   try {
@@ -20,15 +21,16 @@ function MaybeLink({ text: textOrUrl }: { text: string }) {
       </Link>
     );
   } catch {
-    return <>{textOrUrl}</>;
+    return <Markdown>{textOrUrl}</Markdown>;
   }
 }
 
 function Annotation({ annotation }: { annotation: Annotation }) {
   return (
     <li className="flex justify-between gap-4">
-      <span>
-        • <MaybeLink text={annotation.description} />
+      •
+      <span className="grow">
+        <MaybeLink text={annotation.description} />
       </span>
       <span className="text-muted-foreground hidden md:block">
         {annotation.entry.toLocaleString()}
@@ -40,16 +42,12 @@ function Annotation({ annotation }: { annotation: Annotation }) {
 const taskVariants = cva("", {
   variants: {
     status: {
-      default: "text-muted-foreground",
+      recurring: "hidden",
       pending: "",
-    },
-    active: {
-      default: "",
+      deleted: "text-muted-foreground",
       active: "border-yellow-500",
+      completed: "text-muted-foreground border-green-500",
     },
-  },
-  defaultVariants: {
-    status: "default",
   },
 });
 
@@ -57,8 +55,7 @@ export default function TaskCard({ task }: { task: Task }) {
   return (
     <Card
       className={taskVariants({
-        status: task.status === "pending" ? task.status : "default",
-        active: task.start ? "active" : "default",
+        status: task.status,
       })}
     >
       <CardHeader>
@@ -121,8 +118,8 @@ export default function TaskCard({ task }: { task: Task }) {
             </span>
           )}
           {task.end && (
-            <span>
-              Completed {task.end.toLocaleString()} <br />
+            <span className="text-green-500">
+              Ended {task.end.toLocaleString()} <br />
             </span>
           )}
         </CardDescription>
