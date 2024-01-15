@@ -4,6 +4,7 @@ import "./globals.css";
 import CommandForm from "./commandForm";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Filter from "./filter";
+import { Suspense } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,7 +23,9 @@ export default function RootLayout({
       <body className={`${inter.className} min-h-screen`}>
         <header className="border-b">
           <div className="container p-8 flex justify-between items-end">
-            <Filter />
+            <Suspense>
+              <Filter />
+            </Suspense>
             <CommandForm />
           </div>
         </header>
