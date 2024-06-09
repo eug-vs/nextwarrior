@@ -5,6 +5,7 @@ import { Label } from "@/components/ui/label";
 import { applyFilter } from "./actions";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { Search } from "lucide-react";
 
 export default function Filter() {
   const searchParams = useSearchParams();
@@ -22,13 +23,16 @@ export default function Filter() {
           id="filter"
           value={filter}
           onChange={(e) => setFilter(e.target.value)}
-          className="min-w-80"
+          className="md:min-w-80"
           placeholder="task <FILTER> export"
           type="text"
           name="filter"
         />
       </fieldset>
-      <SubmitButton>Show</SubmitButton>
+      <SubmitButton className="flex gap-1.5">
+        <Search />
+        Show
+      </SubmitButton>
     </form>
   );
 }

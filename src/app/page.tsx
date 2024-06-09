@@ -52,7 +52,7 @@ async function CmdOutput({ cmd }: { cmd: string }) {
     }
   } catch (e: any) {
     return (
-      <section className="bg-red-500 text-white p-4 rounded-md">
+      <section className="bg-destructive text-white p-4 rounded-md">
         <CodeBlock variant="destructive">{e.message}</CodeBlock>
       </section>
     );

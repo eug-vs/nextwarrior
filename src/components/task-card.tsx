@@ -12,12 +12,13 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 import { cva } from "class-variance-authority";
 import Markdown from "react-markdown";
 import {
-  ArrowUpIcon,
-  CalendarDaysIcon,
-  CalendarIcon,
-  DocumentDuplicateIcon,
-} from "@heroicons/react/24/outline";
-import { ClockIcon } from "lucide-react";
+  Calendar,
+  CalendarCheck2,
+  CalendarClock,
+  CalendarDays,
+  CalendarSearch,
+  FolderKanban,
+} from "lucide-react";
 
 function MaybeLink({ text: textOrUrl }: { text: string }) {
   try {
@@ -54,7 +55,7 @@ const taskVariants = cva("", {
       waiting: "text-muted-foreground",
       deleted: "text-muted-foreground",
       active: "border-yellow-500",
-      completed: "text-muted-foreground border-green-500",
+      completed: "text-muted-foreground border-success",
     },
   },
 });
@@ -93,14 +94,16 @@ export default function TaskCard({ task }: { task: Task }) {
                 ))}
               </span>
             </span>
-            <Link
-              href={`/?${new URLSearchParams({
-                filter: `project:${task.project}`,
-              })}`}
-              className="text-base font-semibold flex gap-1"
-            >
-              <DocumentDuplicateIcon className="w-4" /> {task.project}
-            </Link>
+            {task.project && (
+              <Link
+                href={`/?${new URLSearchParams({
+                  filter: `project:${task.project}`,
+                })}`}
+                className="text-base hover:underline font-normal flex items-center gap-1"
+              >
+                <FolderKanban className="w-4" /> {task.project}
+              </Link>
+            )}
           </div>
           <span className="flex gap-1 items-start">
             {["pending", "active"].includes(task.status)
@@ -109,39 +112,37 @@ export default function TaskCard({ task }: { task: Task }) {
           </span>
         </CardTitle>
         <CardDescription>
-          <span className="flex gap-1">
-            <CalendarIcon className="w-4" /> Created{" "}
-            {task.entry.toLocaleString()}
+          <span className="flex gap-1 items-center">
+            <Calendar className="w-4" /> Created {task.entry.toLocaleString()}
           </span>
           {task.due && (
             <span
-              className={`flex gap-1 ${
+              className={`flex gap-1 items-center ${
                 task.due < new Date() &&
                 !["completed", "deleted"].includes(task.status) &&
-                "text-red-500"
+                "text-destructive"
               }`}
             >
-              <CalendarDaysIcon className="w-4" /> Due{" "}
-              {task.due?.toLocaleString()}
+              <CalendarDays className="w-4" /> Due {task.due?.toLocaleString()}
               <br />
             </span>
           )}
           {task.start && (
-            <span className="text-yellow-500 flex gap-1">
-              <CalendarIcon className="w-4" /> Started{" "}
+            <span className="text-yellow-500 flex gap-1 items-center">
+              <CalendarSearch className="w-4" /> Started{" "}
               {task.start.toLocaleString()} <br />
             </span>
           )}
           {task.status === "waiting" && task.wait && (
-            <span className="flex gap-1">
-              <ClockIcon className="w-4" /> Waiting {task.wait.toLocaleString()}{" "}
-              <br />
+            <span className="flex gap-1 items-center">
+              <CalendarClock className="w-4" /> Waiting{" "}
+              {task.wait.toLocaleString()} <br />
             </span>
           )}
           {task.end && (
-            <span className="text-green-500 flex gap-1">
-              <CalendarIcon className="w-4" /> Ended {task.end.toLocaleString()}{" "}
-              <br />
+            <span className="text-success flex gap-1 items-center">
+              <CalendarCheck2 className="w-4" /> Ended{" "}
+              {task.end.toLocaleString()} <br />
             </span>
           )}
         </CardDescription>

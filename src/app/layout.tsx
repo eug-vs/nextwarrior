@@ -22,14 +22,14 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.className} min-h-screen`}>
         <header className="border-b">
-          <div className="container p-8 flex justify-between items-end">
+          <div className="container py-8 flex flex-col md:flex-row justify-between gap-4">
             <Suspense>
               <Filter />
             </Suspense>
             <CommandForm />
           </div>
         </header>
-        <div className="container py-16">
+        <div className="container py-8 md:py-16">
           <TooltipProvider>{children}</TooltipProvider>
         </div>
       </body>

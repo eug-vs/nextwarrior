@@ -1,7 +1,6 @@
 "use client";
+import SubmitButton from "@/components/submit-button";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Dialog,
   DialogContent,
@@ -11,11 +10,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { runTaskSubcommand } from "./actions";
-import { useFormState } from "react-dom";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import CodeBlock from "@/lib/codeblock";
-import SubmitButton from "@/components/submit-button";
-import { CommandLineIcon, PlayIcon } from "@heroicons/react/24/outline";
+import { Play, TerminalSquare } from "lucide-react";
+import { useFormState } from "react-dom";
+import { runTaskSubcommand } from "./actions";
 
 export default function CommandForm() {
   const [formState, action] = useFormState(runTaskSubcommand, {
@@ -28,7 +28,7 @@ export default function CommandForm() {
     <Dialog>
       <DialogTrigger asChild>
         <Button className="gap-1 flex">
-          <CommandLineIcon className="w-5" />
+          <TerminalSquare className="w-5" />
           Execute command
         </Button>
       </DialogTrigger>
@@ -57,7 +57,7 @@ export default function CommandForm() {
           </div>
           <DialogFooter>
             <SubmitButton className="flex gap-1">
-              <PlayIcon className="w-5" />
+              <Play className="w-5" />
               Execute
             </SubmitButton>
           </DialogFooter>
