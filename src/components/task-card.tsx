@@ -33,7 +33,7 @@ function MaybeLink({ text: textOrUrl }: { text: string }) {
   }
 }
 
-function Annotation({ annotation }: { annotation: Annotation }) {
+function AnnotationBullet({ annotation }: { annotation: Annotation }) {
   return (
     <li className="flex justify-between gap-4">
       •
@@ -150,7 +150,7 @@ export default function TaskCard({ task }: { task: Task }) {
       {task.annotations && (
         <CardContent className="text-">
           {task.annotations.map((anno) => (
-            <Annotation key={anno.description} annotation={anno} />
+            <AnnotationBullet key={anno.description} annotation={anno} />
           ))}
         </CardContent>
       )}
