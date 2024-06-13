@@ -70,24 +70,28 @@ export default function TaskCard({ task }: { task: Task }) {
       <CardHeader>
         <CardTitle className="flex justify-between gap-2">
           <div className="grid">
-            <span className="flex gap-5 items-start flex-col md:flex-row">
+            <span className="flex gap-x-5 gap-y-1 flex-wrap items-center">
               <Tooltip>
                 <TooltipTrigger className="text-left">
                   <Link
                     href={`/?${new URLSearchParams({ filter: task.uuid })}`}
                   >
-                    {task.description}
+                    {task.description}{" "}
+                    <span className="text-muted-foreground">
+                      {task.id ? `#${task.id}` : ""}
+                    </span>
                   </Link>
                 </TooltipTrigger>
                 <TooltipContent>ID: {task.id}</TooltipContent>
               </Tooltip>
-              <span className="flex gap-2 flex-wrap items-start">
+              <span className="flex gap-2 flex-wrap">
                 {task.tags?.map((tag) => (
                   <Link
                     key={tag}
                     href={`/?${new URLSearchParams({
                       filter: `+${tag}`,
                     }).toString()}`}
+                    className="flex items-center"
                   >
                     <Badge key={tag}>{tag}</Badge>
                   </Link>
