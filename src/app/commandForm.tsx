@@ -20,15 +20,15 @@ import { runTaskSubcommand } from "./actions";
 export default function CommandForm() {
   const [formState, action] = useFormState(runTaskSubcommand, {
     stdout: "",
-    error: "",
+    stderr: "",
     cmd: "",
   });
 
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="gap-1 flex">
-          <TerminalSquare className="w-5" />
+        <Button className="gap-1 flex flex-1">
+          <TerminalSquare />
           Execute command
         </Button>
       </DialogTrigger>
@@ -51,13 +51,13 @@ export default function CommandForm() {
               />
             </fieldset>
             {formState.stdout && <CodeBlock>{formState.stdout}</CodeBlock>}
-            {formState.error && (
-              <CodeBlock variant="destructive">{formState.error}</CodeBlock>
+            {formState.stderr && (
+              <CodeBlock variant="destructive">{formState.stderr}</CodeBlock>
             )}
           </div>
           <DialogFooter>
             <SubmitButton className="flex gap-1">
-              <Play className="w-5" />
+              <Play />
               Execute
             </SubmitButton>
           </DialogFooter>

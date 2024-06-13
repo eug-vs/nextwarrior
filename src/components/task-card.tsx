@@ -24,7 +24,7 @@ function MaybeLink({ text: textOrUrl }: { text: string }) {
   try {
     new URL(textOrUrl); // Will throw for invalid URLs
     return (
-      <Link className="text-blue-500 underline" href={textOrUrl}>
+      <Link className="text-primary underline" href={textOrUrl}>
         {textOrUrl}
       </Link>
     );
@@ -55,7 +55,7 @@ const taskVariants = cva("", {
       waiting: "text-muted-foreground",
       deleted: "text-muted-foreground",
       active: "border-yellow-500",
-      completed: "text-muted-foreground border-success",
+      completed: "text-muted-foreground",
     },
   },
 });
@@ -140,7 +140,9 @@ export default function TaskCard({ task }: { task: Task }) {
             </span>
           )}
           {task.end && (
-            <span className="text-success flex gap-1 items-center">
+            <span
+              className={`flex gap-1 items-center ${task.status === "completed" ? "text-success" : ""}`}
+            >
               <CalendarCheck2 className="w-4" /> Ended{" "}
               {task.end.toLocaleString()} <br />
             </span>

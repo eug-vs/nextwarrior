@@ -5,6 +5,8 @@ import CommandForm from "./commandForm";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Filter from "./filter";
 import { Suspense } from "react";
+import SyncButton from "./syncButton";
+import { Toaster } from "@/components/ui/sonner";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,12 +28,16 @@ export default function RootLayout({
             <Suspense>
               <Filter />
             </Suspense>
-            <CommandForm />
+            <div className="flex gap-4">
+              <CommandForm />
+              <SyncButton />
+            </div>
           </div>
         </header>
         <div className="container py-8 md:py-16">
           <TooltipProvider>{children}</TooltipProvider>
         </div>
+        <Toaster />
       </body>
     </html>
   );

@@ -30,6 +30,7 @@ async function CmdOutput({ cmd }: { cmd: string }) {
       const parsed = taskSchema.array().parse(json);
       return (
         <section className="grid gap-4">
+          <h2 className="text-center font-bold">{parsed.length} results</h2>
           {_.orderBy(
             parsed,
             [
@@ -65,11 +66,11 @@ export default async function Home({ searchParams }: Props) {
   } export`;
   return (
     <main className="grid gap-4">
-      <h1 className="font-mono text-center">{cmd}</h1>
       <Suspense
         key={searchParams.filter}
         fallback={
           <section className="grid gap-4">
+            <Skeleton className="h-6 w-36 mx-auto" />
             {_.times(5).map((i) => (
               <Skeleton key={i} className="h-48" />
             ))}

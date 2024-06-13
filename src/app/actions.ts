@@ -10,16 +10,16 @@ export async function runTaskSubcommand(
 ) {
   const subCommand = formData.get("cmd");
   if (!subCommand || !_.isString(subCommand))
-    return { error: "Please provide a command" };
+    return { stderr: "Please provide a command" };
 
   const cmd = `task ${subCommand}`;
 
   try {
     const { stdout, stderr } = await exec(cmd);
     revalidatePath("/");
-    return { stdout, cmd, error: stderr };
+    return { stdout, cmd, stderr };
   } catch (e: any) {
-    return { cmd, error: e.message };
+    return { cmd, stderr: e.message };
   }
 }
 
