@@ -22,12 +22,13 @@ export default function Filter() {
           <Label htmlFor="filter">Filter</Label>
           <Input
             id="filter"
+            name="filter"
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
             className="md:min-w-80"
             placeholder="task <FILTER> export"
             type="text"
-            name="filter"
+            autoCapitalize="off"
           />
         </fieldset>
         {filter === searchParams.get("filter") ? (

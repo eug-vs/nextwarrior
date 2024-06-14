@@ -45,9 +45,10 @@ export default function CommandForm() {
               <Label htmlFor="cmd">Command</Label>
               <Input
                 id="cmd"
+                name="cmd"
                 placeholder="task <COMMAND>"
                 type="text"
-                name="cmd"
+                autoCapitalize="off"
               />
             </fieldset>
             {formState.stdout && <CodeBlock>{formState.stdout}</CodeBlock>}
